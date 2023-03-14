@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body,
+input,
+textarea,
+button {
+  @apply font-normal text-base;
+  -webkit-font-smoothing: antialiased;
+}
+
+:focus {
+  outline: 0;
+  box-shadow: 0 0 0 2px #00875f;
+}
+
+.active {
+  @apply text-green-500
+}
+
+::-webkit-calendar-picker-indicator {
+  display: none !important;
+}
