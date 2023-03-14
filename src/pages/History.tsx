@@ -1,3 +1,26 @@
+import clsx from 'clsx'
+
+const tasks = [
+  {
+    name: 'Task 1',
+    duration: '20 minutes',
+    start: 'Há 2 meses',
+    status: 'Completed',
+  },
+  {
+    name: 'Task 2',
+    duration: '20 minutes',
+    start: 'Há 2 meses',
+    status: 'In progress',
+  },
+  {
+    name: 'Task 3',
+    duration: '20 minutes',
+    start: 'Há 2 meses',
+    status: 'Interrupted',
+  },
+]
+
 export function History() {
   return (
     <main className="flex-1 p-14 flex flex-col">
@@ -22,48 +45,31 @@ export function History() {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td className="bg-gray-700 border-t-4 border-solid border-gray-800 p-4 text-sm leading-relaxed">
-                Tarefa
-              </td>
-              <td className="bg-gray-700 border-t-4 border-solid border-gray-800 p-4 text-sm leading-relaxed">
-                20 minutos
-              </td>
-              <td className="bg-gray-700 border-t-4 border-solid border-gray-800 p-4 text-sm leading-relaxed">
-                Há 2 meses
-              </td>
-              <td className="bg-gray-700 border-t-4 border-solid border-gray-800 p-4 text-sm leading-relaxed">
-                Concluído
-              </td>
-            </tr>
-            <tr>
-              <td className="bg-gray-700 border-t-4 border-solid border-gray-800 p-4 text-sm leading-relaxed">
-                Tarefa
-              </td>
-              <td className="bg-gray-700 border-t-4 border-solid border-gray-800 p-4 text-sm leading-relaxed">
-                20 minutos
-              </td>
-              <td className="bg-gray-700 border-t-4 border-solid border-gray-800 p-4 text-sm leading-relaxed">
-                Há 2 meses
-              </td>
-              <td className="bg-gray-700 border-t-4 border-solid border-gray-800 p-4 text-sm leading-relaxed">
-                Concluído
-              </td>
-            </tr>
-            <tr>
-              <td className="bg-gray-700 border-t-4 border-solid border-gray-800 p-4 text-sm leading-relaxed">
-                Tarefa
-              </td>
-              <td className="bg-gray-700 border-t-4 border-solid border-gray-800 p-4 text-sm leading-relaxed">
-                20 minutos
-              </td>
-              <td className="bg-gray-700 border-t-4 border-solid border-gray-800 p-4 text-sm leading-relaxed">
-                Há 2 meses
-              </td>
-              <td className="bg-gray-700 border-t-4 border-solid border-gray-800 p-4 text-sm leading-relaxed">
-                Concluído
-              </td>
-            </tr>
+            {tasks.map((task) => (
+              <tr key={task.name}>
+                <td className="bg-gray-700 border-t-4 border-solid border-gray-800 p-4 text-sm leading-relaxed">
+                  {task.name}
+                </td>
+                <td className="bg-gray-700 border-t-4 border-solid border-gray-800 p-4 text-sm leading-relaxed">
+                  {task.duration}
+                </td>
+                <td className="bg-gray-700 border-t-4 border-solid border-gray-800 p-4 text-sm leading-relaxed">
+                  {task.start}
+                </td>
+                <td
+                  className={clsx(
+                    'bg-gray-700 border-t-4 border-solid border-gray-800 p-4 text-sm leading-relaxed flex items-center gap-2 before:w-2 before:h-2 before:rounded-full',
+                    {
+                      'before:bg-green-500': task.status === 'Completed',
+                      'before:bg-yellow-500': task.status === 'In progress',
+                      'before:bg-red-500': task.status === 'Interrupted',
+                    },
+                  )}
+                >
+                  {task.status}
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
