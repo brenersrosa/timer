@@ -23,6 +23,7 @@ interface Cycle {
 export function Home() {
   const [cycles, setCycles] = useState<Cycle[]>([])
   const [activeCycleId, setActiveCycleId] = useState<string | null>(null)
+  const [amountSecondsPast, setAmountSecondsPast] = useState(0)
 
   const { register, handleSubmit, watch, reset } = useForm<NewCycleFormData>({
     resolver: zodResolver(newCycleFormValidationSchema),
@@ -49,7 +50,14 @@ export function Home() {
 
   const activeCycle = cycles.find((cycle) => cycle.id === activeCycleId)
 
-  console.log(activeCycle)
+  const totalSeconds = activeCycle ? activeCycle.minutesAmount * 60 : 0
+  const currentSeconds = activeCycle ? totalSeconds - amountSecondsPast : 0
+
+  const minutesAmount = Math.floor(currentSeconds / 60)
+  const secondsAmount = currentSeconds % 60
+
+  const minutes = String(minutesAmount).padStart(2, '0')
+  const seconds = String(secondsAmount).padStart(2, '0')
 
   const task = watch('task')
   const isSubmitDisable = !task
@@ -94,13 +102,21 @@ export function Home() {
         </div>
 
         <div className="font-mono text-[12rem] leading-[8rem] text-gray-100 flex gap-4">
-          <span className="bg-gray-700 py-10 px-4 rounded-lg">0</span>
-          <span className="bg-gray-700 py-10 px-4 rounded-lg">0</span>
+          <span className="bg-gray-700 py-10 px-4 rounded-lg">
+            {minutes[0]}
+          </span>
+          <span className="bg-gray-700 py-10 px-4 rounded-lg">
+            {minutes[1]}
+          </span>
           <span className="py-8 px-0 text-green-500 w-16 overflow-hidden flex justify-center">
             :
           </span>
-          <span className="bg-gray-700 py-10 px-4 rounded-lg">0</span>
-          <span className="bg-gray-700 py-10 px-4 rounded-lg">0</span>
+          <span className="bg-gray-700 py-10 px-4 rounded-lg">
+            {seconds[0]}
+          </span>
+          <span className="bg-gray-700 py-10 px-4 rounded-lg">
+            {seconds[1]}
+          </span>
         </div>
 
         <button
