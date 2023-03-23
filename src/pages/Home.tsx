@@ -3,20 +3,26 @@ import { Play } from 'phosphor-react'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 
-const newCicleFormValidationSchema = z.object({
-  task: z.string().min(1, 'A tarefa deve conter no mínimo 5 caracteres.'),
+const newCycleFormValidationSchema = z.object({
+  task: z.string().min(1, 'Informe a tarefa.'),
   minutesAmount: z
     .number()
     .min(5, 'O ciclo precisa ser de no mínimo 5 minutos')
     .max(60, 'O ciclo precisa ser de no máximo 60 minutos'),
 })
 
+type NewCycleFormData = z.infer<typeof newCycleFormValidationSchema>
+
 export function Home() {
-  const { register, handleSubmit, watch } = useForm({
-    resolver: zodResolver(newCicleFormValidationSchema),
+  const { register, handleSubmit, watch } = useForm<NewCycleFormData>({
+    resolver: zodResolver(newCycleFormValidationSchema),
+    defaultValues: {
+      task: '',
+      minutesAmount: 0,
+    },
   })
 
-  function handleCreateNewCicle(data: any) {
+  function handleCreateNewCycle(data: NewCycleFormData) {
     console.log(data)
   }
 
@@ -26,7 +32,7 @@ export function Home() {
   return (
     <main className="flex-1 flex flex-col items-center justify-center">
       <form
-        onSubmit={handleSubmit(handleCreateNewCicle)}
+        onSubmit={handleSubmit(handleCreateNewCycle)}
         action=""
         className="flex flex-col items-center gap-14"
       >
