@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { differenceInSeconds } from 'date-fns'
-import { Play } from 'phosphor-react'
+import { HandPalm, Play } from 'phosphor-react'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
@@ -20,6 +20,7 @@ interface Cycle {
   task: string
   minutesAmount: number
   startDate: Date
+  interruptedDate?: Date
 }
 
 export function Home() {
@@ -70,6 +71,20 @@ export function Home() {
     reset()
   }
 
+  function handleInterruptCycle() {
+    setCycles(
+      cycles.map((cycle) => {
+        if (cycle.id === activeCycleId) {
+          return { ...cycle, interruptedDate: new Date() }
+        } else {
+          return cycle
+        }
+      }),
+    )
+
+    setActiveCycleId(null)
+  }
+
   const totalSeconds = activeCycle ? activeCycle.minutesAmount * 60 : 0
   const currentSeconds = activeCycle ? totalSeconds - amountSecondsPassed : 0
 
@@ -79,14 +94,10 @@ export function Home() {
   const minutes = String(minutesAmount).padStart(2, '0')
   const seconds = String(secondsAmount).padStart(2, '0')
 
-  useEffect(() => {
-    if (activeCycle) {
-      document.title = `${minutes}:${seconds}`
-    }
-  }, [minutes, seconds, activeCycle])
-
   const task = watch('task')
   const isSubmitDisable = !task
+
+  console.log(cycles)
 
   return (
     <main className="flex-1 flex flex-col items-center justify-center">
@@ -103,6 +114,7 @@ export function Home() {
             placeholder="Dê um nome para o seu projeto"
             {...register('task')}
             list="task-suggestion"
+            disabled={!!activeCycle}
             className="bg-transparent h-10 border-0 border-b-2 border-b-solid border-gray-500 font-bold text-lg py-0 px-2 text-gray-100 flex-1 placeholder:text-gray-500 focus:shadow-none focus:border-green-500"
           />
 
@@ -120,6 +132,7 @@ export function Home() {
             step={5}
             min={5}
             max={60}
+            disabled={!!activeCycle}
             {...register('minutesAmount', { valueAsNumber: true })}
             className="bg-transparent h-10 w-16 border-0 border-b-2 border-b-solid border-gray-500 font-bold text-lg py-0 px-2 text-gray-100 placeholder:text-gray-500 focus:shadow-none focus:border-green-500"
           />
@@ -145,14 +158,25 @@ export function Home() {
           </span>
         </div>
 
-        <button
-          type="submit"
-          disabled={isSubmitDisable}
-          className="w-full border-0 p-4 rounded-lg flex items-center justify-center gap-2 font-bold cursor-pointer bg-green-500 text-gray-100 hover:bg-green-700 transition-colors disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:bg-green-500"
-        >
-          <Play size={24} />
-          Começar
-        </button>
+        {activeCycle ? (
+          <button
+            type="button"
+            onClick={handleInterruptCycle}
+            className="w-full border-0 p-4 rounded-lg flex items-center justify-center gap-2 font-bold cursor-pointer bg-red-500 text-gray-100 hover:bg-red-700 transition-colors disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:bg-red-500"
+          >
+            <HandPalm size={24} />
+            Interromper
+          </button>
+        ) : (
+          <button
+            type="submit"
+            disabled={isSubmitDisable}
+            className="w-full border-0 p-4 rounded-lg flex items-center justify-center gap-2 font-bold cursor-pointer bg-green-500 text-gray-100 hover:bg-green-700 transition-colors disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:bg-green-500"
+          >
+            <Play size={24} />
+            Começar
+          </button>
+        )}
       </form>
     </main>
   )

@@ -10,7 +10,7 @@ button {
   -webkit-font-smoothing: antialiased;
 }
 
-:focus {
+input:focus {
   outline: 0;
   box-shadow: 0 0 0 2px #00875f;
 }
