@@ -1,25 +1,10 @@
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
-
-const newCycleFormValidationSchema = z.object({
-  task: z.string().min(1, 'Informe a tarefa.'),
-  minutesAmount: z
-    .number()
-    .min(1, 'O ciclo precisa ser de no mínimo 5 minutos')
-    .max(60, 'O ciclo precisa ser de no máximo 60 minutos'),
-})
-
-type NewCycleFormData = z.infer<typeof newCycleFormValidationSchema>
+import { useContext } from 'react'
+import { useFormContext } from 'react-hook-form'
+import { CyclesContext } from '../pages/Home'
 
 export function NewCycleForm() {
-  const { register, handleSubmit, watch, reset } = useForm<NewCycleFormData>({
-    resolver: zodResolver(newCycleFormValidationSchema),
-    defaultValues: {
-      task: '',
-      minutesAmount: 0,
-    },
-  })
+  const { activeCycle } = useContext(CyclesContext)
+  const { register } = useFormContext()
 
   return (
     <div className="w-full flex items-center justify-center gap-2 text-gray-100 text-lg font-bold flex-wrap">
@@ -46,7 +31,7 @@ export function NewCycleForm() {
         type="number"
         placeholder="00"
         step={5}
-        min={1}
+        min={5}
         max={60}
         disabled={!!activeCycle}
         {...register('minutesAmount', { valueAsNumber: true })}
