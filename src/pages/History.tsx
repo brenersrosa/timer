@@ -1,5 +1,8 @@
 import clsx from 'clsx'
+import { formatDistanceToNow } from 'date-fns'
+import ptBR from 'date-fns/locale/pt-BR'
 import { useContext } from 'react'
+
 import { CyclesContext } from '../contexts/CyclesContext'
 
 export function History() {
@@ -37,7 +40,10 @@ export function History() {
                   {cycle.minutesAmount} minutos
                 </td>
                 <td className="bg-gray-700 border-t-4 border-solid border-gray-800 p-4 text-sm leading-relaxed">
-                  {cycle.startDate.toISOString()}
+                  {formatDistanceToNow(cycle.startDate, {
+                    addSuffix: true,
+                    locale: ptBR,
+                  })}
                 </td>
                 <td
                   className={clsx(
