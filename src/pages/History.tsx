@@ -1,4 +1,6 @@
 import clsx from 'clsx'
+import { useContext } from 'react'
+import { CyclesContext } from '../contexts/CyclesContext'
 
 const tasks = [
   {
@@ -22,9 +24,13 @@ const tasks = [
 ]
 
 export function History() {
+  const { cycles } = useContext(CyclesContext)
+
   return (
     <main className="flex-1 p-14 flex flex-col">
       <h1 className="text-2xl text-gray-100 font-bold">Histórico</h1>
+
+      <pre>{JSON.stringify(cycles, null, 2)}</pre>
 
       <div className="flex-1 overflow-auto mt-8">
         <table className="w-full border-collapse min-w-[600px]">
