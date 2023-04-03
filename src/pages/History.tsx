@@ -45,22 +45,24 @@ export function History() {
                     locale: ptBR,
                   })}
                 </td>
-                <td
-                  className={clsx(
-                    'bg-gray-700 border-t-4 border-solid border-gray-800 p-4 text-sm leading-relaxed flex items-center gap-2 before:w-2 before:h-2 before:rounded-full',
-                    {
-                      'before:bg-green-500': cycle.finishedDate,
-                      'before:bg-red-500': cycle.interruptedDate,
-                      'before:bg-yellow-500':
-                        !cycle.finishedDate && !cycle.interruptedDate,
-                    },
-                  )}
-                >
-                  {cycle.finishedDate && <span>Concluído</span>}
-                  {cycle.interruptedDate && <span>Interrompido</span>}
-                  {!cycle.finishedDate && !cycle.interruptedDate && (
-                    <span>Em andamento</span>
-                  )}
+                <td className="bg-gray-700 border-t-4 border-solid border-gray-800 p-4">
+                  <span
+                    className={clsx(
+                      'text-sm leading-relaxed flex items-center gap-2 before:w-2 before:h-2 before:rounded-full',
+                      {
+                        'before:bg-green-500': cycle.finishedDate,
+                        'before:bg-red-500': cycle.interruptedDate,
+                        'before:bg-yellow-500':
+                          !cycle.finishedDate && !cycle.interruptedDate,
+                      },
+                    )}
+                  >
+                    {cycle.finishedDate && 'Concluído'}
+                    {cycle.interruptedDate && 'Interrompido'}
+                    {!cycle.finishedDate &&
+                      !cycle.interruptedDate &&
+                      'Em andamento'}
+                  </span>
                 </td>
               </tr>
             ))}
